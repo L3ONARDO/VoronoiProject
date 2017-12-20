@@ -1,8 +1,5 @@
 package com.model;
 
-/**
- * Created by littl on 20/12/2017.
- */
 import java.util.Set;
 
 public class DelaunayTriangulation {
@@ -12,4 +9,3 @@ public class DelaunayTriangulation {
         return null;
     }
 }
-

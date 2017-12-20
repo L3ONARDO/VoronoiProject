@@ -1,8 +1,5 @@
 package com.voronoiStrategy;
 
-/**
- * Created by littl on 20/12/2017.
- */
 import com.model.Point;
 
 import java.util.Set;
@@ -31,7 +28,7 @@ public class StrategyPair {
         if (m <= n) {
             throw new IllegalArgumentException("Cannot have m smaller than- or equal to n.");
         }
-        if (xmax < 1.0f || ymax <= 1.0f) {
+        if (xmax < 1.0f || ymax < 1.0f) {
             throw new IllegalArgumentException("Must have at least unit size playing field.");
         }
         Set<Point> result = strategyOne.apply(m, null, xmax, ymax);

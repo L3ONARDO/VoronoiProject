@@ -1,8 +1,5 @@
 package com.model;
 
-/**
- * Created by littl on 20/12/2017.
- */
 public class HalfEdge extends Edge {
     private HalfEdge twin;
     private HalfEdge next;

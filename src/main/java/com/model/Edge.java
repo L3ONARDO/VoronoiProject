@@ -1,8 +1,5 @@
 package com.model;
 
-/**
- * Created by littl on 20/12/2017.
- */
 public class Edge {
     private Point p1, p2;
 
@@ -19,4 +16,3 @@ public class Edge {
         return p2;
     }
 }
-
