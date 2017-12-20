@@ -1,8 +1,5 @@
 package com.model;
 
-/**
- * Created by littl on 20/12/2017.
- */
 public class DCEL {
     private HalfEdge head, tail;
 

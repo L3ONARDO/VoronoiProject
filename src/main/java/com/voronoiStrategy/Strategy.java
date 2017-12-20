@@ -1,8 +1,5 @@
-package com.voronoiStrategy;
+package com.strategy;
 
-/**
- * Created by littl on 20/12/2017.
- */
 import com.model.Point;
 
 import java.util.Set;
@@ -19,4 +16,3 @@ public interface Strategy {
      */
     Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax);
 }
-
