@@ -1,4 +1,4 @@
-package com.strategy.playertwo;
+package com.voronoiStrategy.playertwo;
 
 import com.model.Point;
 
@@ -9,10 +9,9 @@ import java.util.Set;
 
 public class BenchmarkingStrategy extends PlayerTwoStrategy {
 
-    @Override
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Set<Point> result = new HashSet<>();
-        Set<Point> aux = new HashSet<>();
+        Set<Point> result = new HashSet<Point>();
+        Set<Point> aux = new HashSet<Point>();
         aux.addAll(inputPoints);
         Point center = new Point(OWNER, xmax / 2.0f, ymax / 2.0f);
         for (int i = 0; i < n; i++) {
@@ -29,7 +28,7 @@ public class BenchmarkingStrategy extends PlayerTwoStrategy {
         if (playerTwoPoints.isEmpty()) {
             return center.findExtremePoint(playerOnePoints, false);
         }
-        Map<Point, Float> distanceMap = new HashMap<>();
+        Map<Point, Float> distanceMap = new HashMap<Point, Float>();
         for (Point playerOnePoint : playerOnePoints) {
             Point closestPoint = playerOnePoint.findExtremePoint(playerTwoPoints, true);
             distanceMap.put(playerOnePoint, playerOnePoint.distanceTo(closestPoint));

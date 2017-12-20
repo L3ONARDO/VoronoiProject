@@ -1,4 +1,4 @@
-package com.strategy;
+package com.voronoiStrategy;
 
 import com.model.Point;
 

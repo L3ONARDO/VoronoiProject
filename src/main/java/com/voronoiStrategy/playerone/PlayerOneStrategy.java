@@ -1,7 +1,7 @@
-package com.strategy.playerone;
+package com.voronoiStrategy.playerone;
 
 import com.model.Point;
-import com.strategy.Strategy;
+import com.voronoiStrategy.Strategy;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ public abstract class PlayerOneStrategy implements Strategy {
      * @return {@link Set<Point>}.
      */
     protected Set<Point> transformY(Set<Point> toTranform, float xmax, float ymax) {
-        Set<Point> result = new HashSet<>();
+        Set<Point> result = new HashSet<Point>();
         float x = xmax / 2.0f; // The transformed x-coordinate.
         for (Point point : toTranform) {
             float y = (point.getX() / xmax) * ymax; // The transformed y-coordinate.
