@@ -54,4 +54,17 @@ public class Point {
         }
         return result;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Point point = (Point) o;
+
+        if (owner != point.owner) return false;
+        if (Float.compare(point.x, x) != 0) return false;
+        return Float.compare(point.y, y) == 0;
+
+    }
 }
