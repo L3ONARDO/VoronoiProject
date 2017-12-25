@@ -1,24 +1,41 @@
 package com.voronoiStrategy.playertwo;
 
 import com.model.Point;
+import com.util.Line;
+import com.util.MathUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class BenchmarkingStrategy extends PlayerTwoStrategy {
+    private MathUtils mathUtils;
+
+    public BenchmarkingStrategy() {
+        this.mathUtils = new MathUtils();
+    }
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<Point>();
         Set<Point> aux = new HashSet<Point>();
+        result.addAll(inputPoints);
         aux.addAll(inputPoints);
         Point center = new Point(OWNER, xmax / 2.0f, ymax / 2.0f);
         for (int i = 0; i < n; i++) {
             Point distanceMaximalPoint = findDistanceMaximizingPoint(aux, result, center);
-            // TODO: Continue here by finding line from distanceMaximalPoint to center, finding the lines closest intersection with convex hull and return infinitesimally close point to that intersection.
-            // TODO: This involves first setting up robust representations of- and calculations for lines, convex-hulls and intersections between them.
-            result.add(distanceMaximalPoint);
+            Line distanceMaximalToCenter = new Line(distanceMaximalPoint, center);
+            List<Point> convexHull = mathUtils.orderByGiftWrapping(inputPoints);
+            List<Point> intersectionsWithHull = mathUtils.findIntersectionsBetweenLineAndShape(convexHull, distanceMaximalToCenter);
+            if (intersectionsWithHull.isEmpty()) throw new IllegalStateException("distanceMaximalToCenter should have an intersection with convex hull.");
+            Point intersectionWithHull = intersectionsWithHull.get(0);
+            if (distanceMaximalPoint.distanceTo(intersectionsWithHull.get(1)) < distanceMaximalPoint.distanceTo(intersectionWithHull)) intersectionWithHull  = intersectionsWithHull.get(1);
+            float signX = 1.0f;
+            float signY = 1.0f;
+            if (intersectionWithHull.getX() < center.getX()) {
+                signX = -1.0f;
+            }
+            if (intersectionWithHull.getY() < center.getY()) {
+                signY = -1.0f;
+            }
+            result.add(new Point(PlayerTwoStrategy.OWNER, intersectionWithHull.getX() + signX * MathUtils.EPSILON, intersectionWithHull.getY() + signY * MathUtils.EPSILON));
             aux.remove(distanceMaximalPoint);
         }
         return result;
