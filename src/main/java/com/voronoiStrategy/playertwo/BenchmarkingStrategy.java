@@ -7,11 +7,6 @@ import com.util.MathUtils;
 import java.util.*;
 
 public class BenchmarkingStrategy extends PlayerTwoStrategy {
-    private MathUtils mathUtils;
-
-    public BenchmarkingStrategy() {
-        this.mathUtils = new MathUtils();
-    }
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<Point>();
