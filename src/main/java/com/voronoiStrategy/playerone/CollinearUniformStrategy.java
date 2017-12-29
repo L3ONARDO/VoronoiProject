@@ -14,7 +14,7 @@ public class ColinearUniformStrategy extends PlayerOneStrategy {
         float mu = xmax / n;
         float x = 0f;
         float y = ymax / 2.0f;
-        for (int i = 0; i < n; i++) { // Add new points based on normal distribution samples.
+        for (int i = 0; i < n; i++) { // Add new points at uniform distance along the horizontal line.
             x += mu;
             Point point = new Point(OWNER, x, y);
             result.add(point);
