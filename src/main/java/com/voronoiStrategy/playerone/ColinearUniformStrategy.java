@@ -10,7 +10,7 @@ public class ColinearUniformStrategy extends PlayerOneStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<Point>();
-        // Calculate statistics for normal distribution, as well as base x and constant y.
+        // Calculate the distance between each point on the mid-line. 
         float mu = xmax / n;
         float x = 0f;
         float y = ymax / 2.0f;
