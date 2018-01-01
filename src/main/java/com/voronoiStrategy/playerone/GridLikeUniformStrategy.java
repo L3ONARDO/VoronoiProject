@@ -19,17 +19,8 @@ public class GridLikeUniformStrategy extends PlayerOneStrategy {
         float x = (xdist / 2);
         float y = (ydist / 2);
         
-        //Adding the center points of all the grids to the Set 'result'
+        //Add the points to the Set result
 
-        for (int i=0; i < n; i++){
-            for (int j=0; j < n; j++ ){
-                Point point = new Point(OWNER, x, y);
-                result.add(point);
-                x += xdist;
-            }
-            y += ydist;
-            x = (xdist / 2);
-        }
         if (ymax > xmax) { // If the bounding box is taller than it is wide, transform the points.
             return transformY(result, xmax, ymax);
         }
