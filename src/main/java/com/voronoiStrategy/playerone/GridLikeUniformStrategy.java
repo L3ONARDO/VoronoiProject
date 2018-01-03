@@ -4,13 +4,26 @@ import com.model.Point;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.lang.Math.*;
+import java.lang.Math.sqrt;
 
 public class GridLikeUniformStrategy extends PlayerOneStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Random random = new Random();
         Set<Point> result = new HashSet<Point>();
+        
+        // Check if number of points is 2
+        if (n == 2){
+            float y = ymax/2; //Mid point along y-axis
+            float x1 = xmax/4; //x mid-point of first grid
+            float x2 = 3*x1; //x mid-point of second grid
+            Point point1 = new Point(OWNER, x1, y);
+            Point point2 = new Point(OWNER, x2, y)
+            result.add(point1);
+            result.add(point2);
+        }
+        
+        else{
 
         // Calculate the root of n. The sqrt_n should be an integer to form grids. 
         float sqrt_n = sqrt(n);
