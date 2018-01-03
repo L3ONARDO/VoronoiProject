@@ -33,7 +33,7 @@ public class ImprovedGridLikeStrategy extends PlayerOneStrategy {
             x = (xdist / 2);
         }
 
-        //Plot the remaining points iteratively on the convex hull (square). 
+        //TODO: Plot the remaining points iteratively on the convex hull (square). 
 
         if (ymax > xmax) { // If the bounding box is taller than its wide, transform the points.
             return transformY(result, xmax, ymax);
