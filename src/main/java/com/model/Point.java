@@ -5,6 +5,7 @@ import java.util.Set;
 public class Point {
     private boolean owner;
     private float x, y;
+    private Segment segment;
 
     public Point(boolean owner, float x, float y) {
         this.owner = owner;
@@ -40,20 +41,98 @@ public class Point {
      *                            The extreme point is the furthest point otherwise.
      * @return {Link Point}.
      */
-    public Point findExtremePoint(Set<Point> points, boolean closest) {
-        if (points.isEmpty()) throw new IllegalArgumentException("Must have points to compare to.");
-        Point result = points.iterator().next();
-        float distance = result.distanceTo(this);
-        for (Point p : points) {
-            float newDistance = p.distanceTo(this);
-            if (closest) {
-                if (newDistance < distance) result = p;
-            } else {
-                if (newDistance > distance) result = p;
-            }
-        }
-        return result;
+//    public Point findExtremePoint(Set<Point> points, boolean closest) {
+//        if (points.isEmpty()) throw new IllegalArgumentException("Must have points to compare to.");
+//        Point result = points.iterator().next();
+//        float distance = result.distanceTo(this);
+//        for (Point p : points) {
+//            float newDistance = p.distanceTo(this);
+//            if (closest) {
+//                if (newDistance < distance) result = p;
+//            } else {
+//                if (newDistance > distance) result = p;
+//            }
+//        }
+//        return result;
+//    }
+
+    /**
+     * Attaches a segment to the point.
+     *
+     * @param segment The attached segment
+     */
+    public void setSegment(Segment segment) {
+        this.segment = segment;
     }
+
+    /**
+     * Returns the edge attached to the point.
+     * @return The attached segment
+     */
+    public Segment getSegment() {
+        return segment;
+    }
+
+     /**
+      * Calculates the cross product
+      * of two vectors (p0, p1) and (p0, p2)
+      * defined by three points p0, p1 and p2.
+      *
+      * @param p0 point1
+      * @param p1 point2
+      * @param p2 point3
+      * @return The cross product
+      */
+     private static float crossProduct(Point p0, Point p1, Point p2) {
+        return (p1.getX() - p0.getX()) * (p2.getY() - p0.getY()) -
+                (p2.getX() - p0.getX()) * (p1.getY() - p0.getY());
+     }
+
+    /**
+      * Check if two vectors (p0, p1) and (p1, p2)
+      * defined by three points p0, p1 and p2 make a left turn.
+      *
+      * @param p0 point1
+      * @param p1 point2
+      * @param p2 point3
+      * @return true, if the turn is left
+      */
+     public static boolean isLeftTurn(Point p0, Point p1, Point p2) {
+        return (crossProduct(p0, p1, p2) > 0);
+     }
+
+     /**
+      * Check if two vectors (p0, p1) and (p1, p2)
+      * defined by three points p0, p1 and p2 make a right turn.
+      *
+      * @param p0 point1
+      * @param p1 point2
+      * @param p2 point3
+      * @return true, if the turn is right
+      */
+     public static boolean isRightTurn(Point p0, Point p1, Point p2) {
+        return (crossProduct(p0, p1, p2) < 0);
+     }
+
+      /**
+       * Determines if the point is the left vertex of the attached segment.
+       *
+       * @return true, if the point is the left vertex
+       */
+      public boolean isLeft() {
+         return (segment != null && this.equals(segment.getLeft()));
+      }
+
+     /**
+      * Determines if the point is the right vertex of the attached segment.
+      *
+      * @return true, if the point is the right vertex
+      */
+      public boolean isRight() {
+         return (segment != null && this.equals(segment.getRight()));
+      }
+
+
 
     @Override
     public boolean equals(Object o) {
