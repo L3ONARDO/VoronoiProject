@@ -40,6 +40,7 @@ public class DelaunayTriangulation {
                     }
                 }
                 if (newTriangles.size() != 4) throw new IllegalStateException("Shit!");
+                List<Edge> newEdgesLegalized = new ArrayList<>();
                 for (Triangle t : newTriangles) {
                     for (Triangle s : newTriangles) {
                         if (!t.equals(s)) {
@@ -51,7 +52,12 @@ public class DelaunayTriangulation {
                     TriangulationDAG td = new TriangulationDAG(t);
                     dag.addChild(td);
 
-                    //TODO: Legalize edge
+                    for (Edge edge : t.getEdges()) {
+                        if ((edge.getP1().equals(p) || edge.getP2().equals(p)) && !newEdgesLegalized.contains(edge)) {
+                            newEdgesLegalized.add(edge);
+                            legalizeEdge(p, t, edge);
+                        }
+                    }
                 }
             } else {
                 // Split into three triangles
@@ -74,9 +80,30 @@ public class DelaunayTriangulation {
                 dag.addChild(td2);
                 dag.addChild(td3);
 
-                legalizeEdge(p, t1, )
+                List<Edge> newEdges = findNewEdges(t1, t2, t3, p);
+                legalizeEdge(p, t1, newEdges.get(0));
+                legalizeEdge(p, t2, newEdges.get(1));
+                legalizeEdge(p, t3, newEdges.get(2));
             }
         }
+    }
+
+    private void legalizeEdge(Point p, Triangle t1, Edge edge) {
+
+    }
+
+    private List<Edge> findNewEdges(Triangle t1, Triangle t2, Triangle t3, Point p) {
+        List<Edge> result = new ArrayList<>();
+        for (Edge edge : t1.getEdges()) {
+            if (edge.getP1().equals(p) || edge.getP2().equals(p)) result.add(edge); break;
+        }
+        for (Edge edge : t2.getEdges()) {
+            if ((edge.getP1().equals(p) || edge.getP2().equals(p)) && !result.contains(edge)) result.add(edge); break;
+        }
+        for (Edge edge : t3.getEdges()) {
+            if ((edge.getP1().equals(p) || edge.getP2().equals(p)) && !result.contains(edge)) result.add(edge); break;
+        }
+        return result;
     }
 
     private Triangle constructOuterTriangle(Set<Point> points) {
