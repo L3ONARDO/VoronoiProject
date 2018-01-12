@@ -1,7 +1,8 @@
-package com.util;
+package util;
 
-import com.model.Point;
+import model.Point;
 import org.junit.Test;
+import util.MergeSortPointSet;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,6 +1,6 @@
-package com.strategy;
+package strategy;
 
-import com.model.Point;
+import model.Point;
 
 import java.util.Set;
 
