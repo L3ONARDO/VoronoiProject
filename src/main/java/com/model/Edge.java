@@ -15,4 +15,9 @@ public class Edge {
     public Point getP2() {
         return p2;
     }
+
+    public boolean isIllegal(Triangle t1, Triangle t2) {
+        Circle c = new Circle(t1.getP1(), t1.getP2(), t1.getP3());
+        return c.isInside(t2.getThirdPoint(p1, p2));
+    }
 }
