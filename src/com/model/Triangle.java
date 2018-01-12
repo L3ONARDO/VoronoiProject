@@ -78,4 +78,10 @@ public class Triangle {
         }
         return null;
     }
+
+    public Point getThirdPoint(Point p1, Point p2) {
+        if (!this.p1.equals(p1) && !this.p1.equals(p2)) return this.p1;
+        if (!this.p2.equals(p1) && !this.p2.equals(p2)) return this.p2;
+        return this.p3;
+    }
 }

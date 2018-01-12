@@ -38,4 +38,9 @@ public class Point {
         Line line = new Line(edge.getP1(), edge.getP2());
         return x == line.solveForX(y);
     }
+
+    public float dist(Point p0) {
+        return (float) Math.sqrt((this.getX() - p0.getX()) * (this.getX() - p0.getX()) +
+                (this.getY() - p0.getY()) * (this.getY() - p0.getY()));
+    }
 }

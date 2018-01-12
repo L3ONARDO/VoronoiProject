@@ -7,7 +7,7 @@ import java.util.*;
 
 public class DelaunayTriangulation {
 
-    public List<Edge> calculate(Set<Point> points) {
+    public List<Triangle> calculate(Set<Point> points) {
         Triangle outerTriangle = constructOuterTriangle(points);
 
         TriangulationDAG triangulationDAG = new TriangulationDAG(outerTriangle);
@@ -55,7 +55,7 @@ public class DelaunayTriangulation {
                     for (Edge edge : t.getEdges()) {
                         if ((edge.getP1().equals(p) || edge.getP2().equals(p)) && !newEdgesLegalized.contains(edge)) {
                             newEdgesLegalized.add(edge);
-                            legalizeEdge(p, t, edge);
+                            legalizeEdge(triangulationDAG, t, edge);
                         }
                     }
                 }
@@ -81,15 +81,79 @@ public class DelaunayTriangulation {
                 dag.addChild(td3);
 
                 List<Edge> newEdges = findNewEdges(t1, t2, t3, p);
-                legalizeEdge(p, t1, newEdges.get(0));
-                legalizeEdge(p, t2, newEdges.get(1));
-                legalizeEdge(p, t3, newEdges.get(2));
+                legalizeEdge(triangulationDAG, t1, newEdges.get(0));
+                legalizeEdge(triangulationDAG, t2, newEdges.get(1));
+                legalizeEdge(triangulationDAG, t3, newEdges.get(2));
             }
         }
+
+        List<Triangle> aux = triangulationDAG.getTriangulation();
+        List<Triangle> result = new ArrayList<>();
+
+        for (Triangle t : aux) {
+            if (!(t.containsPoint(outerTriangle.getP1()) ||
+                    t.containsPoint(outerTriangle.getP2()) ||
+                    t.containsPoint(outerTriangle.getP3()))) {
+                result.add(t);
+            }
+        }
+        return result;
     }
 
-    private void legalizeEdge(Point p, Triangle t1, Edge edge) {
+    private void legalizeEdge(TriangulationDAG triangulationDAG, Triangle t1, Edge edge) {
 
+        Triangle t2 = t1.getAdjacency().get(edge);
+
+        if (t2 != null && edge.isIllegal(t1, t2)) {
+            Point p1 = t1.getThirdPoint(edge.getP1(), edge.getP2());
+            Point p2 = t2.getThirdPoint(edge.getP1(), edge.getP2());
+
+            Edge newEdge = new Edge(p1, p2);
+            Triangle newT1 = new Triangle(edge.getP1(), p1, p2);
+            Triangle newT2 = new Triangle(edge.getP2(), p1, p2);
+            for (Edge e : newT1.getEdges()) {
+                for (Edge f : t1.getEdges()) {
+                    if (e.equals(f)) {
+                        newT1.getAdjacency().put(e, t1.getAdjacency().get(f));
+                    }
+                }
+                for (Edge f : t2.getEdges()) {
+                    if (e.equals(f)) {
+                        newT1.getAdjacency().put(e, t2.getAdjacency().get(f));
+                    }
+                }
+            }
+            for (Edge e : newT2.getEdges()) {
+                for (Edge f : t1.getEdges()) {
+                    if (e.equals(f)) {
+                        newT2.getAdjacency().put(e, t1.getAdjacency().get(f));
+                    }
+                }
+                for (Edge f : t2.getEdges()) {
+                    if (e.equals(f)) {
+                        newT2.getAdjacency().put(e, t2.getAdjacency().get(f));
+                    }
+                }
+            }
+            newT1.getAdjacency().put(newEdge, newT2);
+            newT2.getAdjacency().put(newEdge, newT1);
+
+            TriangulationDAG td1 = triangulationDAG.locateTriangle(t1);
+            TriangulationDAG td2 = triangulationDAG.locateTriangle(t2);
+            TriangulationDAG td3 = new TriangulationDAG(newT1);
+            TriangulationDAG td4 = new TriangulationDAG(newT2);
+            td1.addChild(td3);
+            td1.addChild(td4);
+            td2.addChild(td3);
+            td2.addChild(td4);
+
+            for (Edge e : newT1.getEdges()) {
+                if (!e.equals(newEdge)) legalizeEdge(triangulationDAG, newT1, e);
+            }
+            for (Edge e : newT2.getEdges()) {
+                if (!e.equals(newEdge)) legalizeEdge(triangulationDAG, newT2, e);
+            }
+        }
     }
 
     private List<Edge> findNewEdges(Triangle t1, Triangle t2, Triangle t3, Point p) {
