@@ -1,7 +1,7 @@
-package com.model.TriangulationDAG;
+package model.TriangulationDAG;
 
-import com.model.Point;
-import com.model.Triangle;
+import model.Point;
+import model.Triangle;
 
 import java.util.ArrayList;
 import java.util.HashSet;

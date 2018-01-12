@@ -1,7 +1,7 @@
-package com.model;
+package model;
 
-import com.model.TriangulationDAG.DAGLocation;
-import com.model.TriangulationDAG.TriangulationDAG;
+import model.TriangulationDAG.DAGLocation;
+import model.TriangulationDAG.TriangulationDAG;
 
 import java.util.*;
 

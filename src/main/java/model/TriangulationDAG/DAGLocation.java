@@ -1,6 +1,6 @@
-package com.model.TriangulationDAG;
+package model.TriangulationDAG;
 
-import com.model.Triangle;
+import model.Triangle;
 
 public class DAGLocation {
     private TriangulationDAG triangulationDAG;

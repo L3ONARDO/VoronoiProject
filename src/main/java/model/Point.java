@@ -1,6 +1,4 @@
-package com.model;
-
-import java.util.Objects;
+package model;
 
 public class Point {
     private boolean owner;
