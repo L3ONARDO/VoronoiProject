@@ -33,8 +33,14 @@ public class Edge {
                 p1.equals(edge.getP2()) && p2.equals(edge.getP1());
     }
 
+    @Override
+    public String toString() {
+        return "(" + p1.toString() + ", " + p2.toString() + ")";
+    }
+
     public boolean isIllegal(Triangle t1, Triangle t2) {
         Circle c = new Circle(t1.getP1(), t1.getP2(), t1.getP3());
+        if (c.getCenter() == null) return false;
         return c.isInside(t2.getThirdPoint(p1, p2));
     }
 }

@@ -23,7 +23,7 @@ public class Circle {
                         c.getY()*c.getY() - a.getY()*a.getY());
 
         center = Line.intersection(l1, l2);
-        radius = center.dist(a);
+        if (center != null) radius = center.dist(a);
     }
 
     /**
@@ -34,5 +34,9 @@ public class Circle {
      */
     public boolean isInside(Point p) {
         return center.dist(p) < radius;
+    }
+
+    public Point getCenter() {
+        return center;
     }
 }

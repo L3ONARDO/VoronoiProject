@@ -24,21 +24,37 @@ public class Triangle {
      * From https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
      */
     public boolean containsPoint(Point p) {
-        boolean b1, b2, b3;
+        /* Calculate area of triangle ABC */
+        float A = area(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 
-        b1 = sign(p, p1, p2) < 0.0f;
-        b2 = sign(p, p2, p3) < 0.0f;
-        b3 = sign(p, p3, p1) < 0.0f;
+        /* Calculate area of triangle PBC */
+        float A1 = area(p.getX(), p.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 
-        return ((b1 == b2) && (b2 == b3));
+        /* Calculate area of triangle PAC */
+        float A2 = area(p1.getX(), p1.getY(), p.getX(), p.getY(), p3.getX(), p3.getY());
+
+        /* Calculate area of triangle PAB */
+        float A3 = area(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p.getX(), p.getY());
+
+        /* Check if sum of A1, A2 and A3 is same as A */
+        return (A == A1 + A2 + A3);
+    }
+
+    /* A utility function to calculate area of triangle
+      formed by (x1, y1) (x2, y2) and (x3, y3) */
+    private float area(float x1, float y1, float x2, float y2,
+                      float x3, float y3)
+    {
+        return (float) Math.abs((x1*(y2-y3) + x2*(y3-y1)+
+                x3*(y1-y2))/2.0);
     }
 
     public void link(Triangle triangle) {
         for (Edge e1 : this.getEdges()) {
             for (Edge e2 : triangle.getEdges()) {
                 if (e1.equals(e2)) {
-                    adjacency.put(e1, triangle);
-                    triangle.getAdjacency().put(e2, this);
+                    addAdjacency(e1, triangle);
+                    triangle.addAdjacency(e2, this);
                 }
             }
         }
@@ -68,6 +84,18 @@ public class Triangle {
         return adjacency;
     }
 
+    public void addAdjacency(Edge edge, Triangle triangle) {
+        if (edge == null || triangle == null) return;
+        Map<Edge, Triangle> newAdjacency = new HashMap<>();
+        for (Map.Entry<Edge, Triangle> entry : adjacency.entrySet()) {
+            if (!entry.getKey().equals(edge)) {
+                newAdjacency.put(entry.getKey(), entry.getValue());
+            }
+        }
+        newAdjacency.put(edge, triangle);
+        adjacency = newAdjacency;
+    }
+
     private float sign (Point p1, Point p2, Point p3) {
         return (p1.getX() - p3.getX()) * (p2.getY() - p3.getY()) - (p2.getX() - p3.getX()) * (p1.getY() - p3.getY());
     }
@@ -83,5 +111,19 @@ public class Triangle {
         if (!this.p1.equals(p1) && !this.p1.equals(p2)) return this.p1;
         if (!this.p2.equals(p1) && !this.p2.equals(p2)) return this.p2;
         return this.p3;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + p1.toString() + ", " + p2.toString() + ", " + p3.toString() + ")";
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Triangle)) return false;
+        Triangle triangle = (Triangle) object;
+        return (p1.equals(triangle.p1) || p1.equals(triangle.p2) || p1.equals(triangle.p3)) &&
+                (p2.equals(triangle.p1) || p2.equals(triangle.p2) || p2.equals(triangle.p3)) &&
+                (p3.equals(triangle.p1) || p3.equals(triangle.p2) || p3.equals(triangle.p3));
     }
 }

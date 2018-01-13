@@ -41,4 +41,9 @@ public class Point {
         return (float) Math.sqrt((this.getX() - p0.getX()) * (this.getX() - p0.getX()) +
                 (this.getY() - p0.getY()) * (this.getY() - p0.getY()));
     }
+
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ")";
+    }
 }
