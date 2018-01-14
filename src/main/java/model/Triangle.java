@@ -1,5 +1,7 @@
 package model;
 
+import model.TriangulationDAG.TriangulationDAG;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +11,7 @@ public class Triangle {
     private Point p1, p2, p3;
     private Edge side1, side2, side3;
     private Map<Edge, Triangle> adjacency;
+    private TriangulationDAG triangulationDAG;
 
     public Triangle(Point p1, Point p2, Point p3) {
         this.p1 = p1;
@@ -18,6 +21,7 @@ public class Triangle {
         this.side2 = new Edge(p2, p3);
         this.side3 = new Edge(p3, p1);
         this.adjacency = new HashMap<>();
+        this.triangulationDAG = new TriangulationDAG(this);
     }
 
     /**
@@ -96,6 +100,10 @@ public class Triangle {
         adjacency = newAdjacency;
     }
 
+    public TriangulationDAG getTriangulationDAG() {
+        return triangulationDAG;
+    }
+
     private float sign (Point p1, Point p2, Point p3) {
         return (p1.getX() - p3.getX()) * (p2.getY() - p3.getY()) - (p2.getX() - p3.getX()) * (p1.getY() - p3.getY());
     }
@@ -125,5 +133,12 @@ public class Triangle {
         return (p1.equals(triangle.p1) || p1.equals(triangle.p2) || p1.equals(triangle.p3)) &&
                 (p2.equals(triangle.p1) || p2.equals(triangle.p2) || p2.equals(triangle.p3)) &&
                 (p3.equals(triangle.p1) || p3.equals(triangle.p2) || p3.equals(triangle.p3));
+    }
+
+    public Triangle getAdjacentTriangle(Edge boundary) {
+        for (Map.Entry<Edge, Triangle> entry : adjacency.entrySet()) {
+            if (entry.getKey().equals(boundary)) return entry.getValue();
+        }
+        return null;
     }
 }

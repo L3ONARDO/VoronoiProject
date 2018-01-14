@@ -33,8 +33,14 @@ public class Point {
     }
 
     public boolean onEdge(Edge edge) {
-        Line line = new Line(edge.getP1(), edge.getP2());
-        return x == line.solveForX(y);
+        if (edge.getP1().getX() == edge.getP2().getX()) return edge.getP1().getX() == x;
+        float a1 = (y - edge.getP1().getY()) / (x - edge.getP1().getX());
+        float a2 = (y - edge.getP2().getY()) / (x - edge.getP2().getX());
+        return a1 == a2 && xInRange(edge.getP1().getX(), edge.getP2().getX());
+    }
+
+    private boolean xInRange(float x1, float x2) {
+        return (x1 <= x && x <= x2) || (x2 <= x && x <= x1);
     }
 
     public float dist(Point p0) {

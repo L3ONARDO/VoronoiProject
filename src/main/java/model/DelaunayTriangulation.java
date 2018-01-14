@@ -20,14 +20,9 @@ public class DelaunayTriangulation {
     public List<Triangle> calculate(Set<Point> points) {
         Triangle outerTriangle = constructOuterTriangle(points);
 
-        TriangulationDAG triangulationDAG = new TriangulationDAG(outerTriangle);
+        TriangulationDAG triangulationDAG = outerTriangle.getTriangulationDAG();
 
         List<Point> permutation = randomShuffle(points);
-//        List<Point> permutation = new ArrayList<>();
-//        permutation.add(new Point(true, 4f, 1f));
-//        permutation.add(new Point(true, 2f, 0f));
-//        permutation.add(new Point(true, 2f, 2f));
-//        permutation.add(new Point(true, 0f, 1f));
 
         while (!permutation.isEmpty()) {
             Point p = permutation.get(0);
@@ -40,8 +35,7 @@ public class DelaunayTriangulation {
             if (pointOnBoundary(p, triangle)) {
                 // Split into four triangles
                 Edge boundary = triangle.getBoundary(p);
-                Triangle adjacent = triangle.getAdjacency().get(boundary);
-                Edge adjacentBoundary = adjacent.getBoundary(p);
+                Triangle adjacent = triangle.getAdjacentTriangle(boundary);
 
                 List<Triangle> newTriangles = new ArrayList<>();
                 for (Edge edge : triangle.getEdges()) {
@@ -50,28 +44,32 @@ public class DelaunayTriangulation {
                     }
                 }
                 for (Edge edge : adjacent.getEdges()) {
-                    if (!edge.equals(adjacentBoundary)) {
+                    if (!edge.equals(boundary)) {
                         newTriangles.add(new Triangle(edge.getP1(), edge.getP2(), p));
                     }
                 }
                 if (newTriangles.size() != 4) throw new IllegalStateException("Shit!");
-                List<Edge> newEdgesLegalized = new ArrayList<>();
                 for (Triangle t : newTriangles) {
                     for (Triangle s : newTriangles) {
                         if (!t.equals(s)) {
                             t.link(s);
                         }
                     }
-                    t.link(triangle);
+                    for (Triangle s : triangle.getAdjacency().values()) {
+                        if (!s.equals(adjacent)) t.link(s);
+                    }
+                    for (Triangle s : adjacent.getAdjacency().values()) {
+                        if (!s.equals(triangle)) t.link(s);
+                    }
 
-                    TriangulationDAG td = new TriangulationDAG(t);
+                    TriangulationDAG td = t.getTriangulationDAG();
                     dag.addChild(td);
-
-                    for (Edge edge : t.getEdges()) {
-                        if ((edge.getP1().equals(p) || edge.getP2().equals(p)) && !newEdgesLegalized.contains(edge)) {
-                            newEdgesLegalized.add(edge);
-                            legalizeEdge(triangulationDAG, t, edge);
-                        }
+                    adjacent.getTriangulationDAG().addChild(td);
+                }
+                for (Triangle t : newTriangles) {
+                    List<LegalizeCallPair> calls = findLegalizeCallPairs(p, t);
+                    for (LegalizeCallPair call : calls) {
+                        legalizeEdge(triangulationDAG, call.triangle, call.edge);
                     }
                 }
             } else {
@@ -89,22 +87,19 @@ public class DelaunayTriangulation {
                     t3.link(entry.getValue());
                 }
 
-                TriangulationDAG td1 = new TriangulationDAG(t1);
-                TriangulationDAG td2 = new TriangulationDAG(t2);
-                TriangulationDAG td3 = new TriangulationDAG(t3);
+                TriangulationDAG td1 = t1.getTriangulationDAG();
+                TriangulationDAG td2 = t2.getTriangulationDAG();
+                TriangulationDAG td3 = t3.getTriangulationDAG();
 
                 dag.addChild(td1);
                 dag.addChild(td2);
                 dag.addChild(td3);
 
-                List<LegalizeCallPair> calls = findLegalizeCallPairs(t1, t2, t3, p);
+                List<LegalizeCallPair> calls = findLegalizeCallPairs(p, t1, t2, t3);
                 if (calls.size() != 3) throw new IllegalArgumentException("Damn!");
                 for (LegalizeCallPair call : calls) {
                     legalizeEdge(triangulationDAG, call.triangle, call.edge);
                 }
-//                legalizeEdge(triangulationDAG, t1, newEdges.get(0));
-//                legalizeEdge(triangulationDAG, t2, newEdges.get(1));
-//                legalizeEdge(triangulationDAG, t3, newEdges.get(2));
             }
         }
 
@@ -131,24 +126,14 @@ public class DelaunayTriangulation {
         return true;
     }
 
-    private List<LegalizeCallPair> findLegalizeCallPairs(Triangle t1, Triangle t2, Triangle t3, Point p) {
+    private List<LegalizeCallPair> findLegalizeCallPairs(Point p, Triangle... triangles) {
         List<LegalizeCallPair> result = new ArrayList<>();
-        for (Edge edge : t1.getEdges()) {
-            if (!edge.getP1().equals(p) && !edge.getP2().equals(p)) {
-                result.add(new LegalizeCallPair(t1, edge));
-                break;
-            }
-        }
-        for (Edge edge : t2.getEdges()) {
-            if (!edge.getP1().equals(p) && !edge.getP2().equals(p)) {
-                result.add(new LegalizeCallPair(t2, edge));
-                break;
-            }
-        }
-        for (Edge edge : t3.getEdges()) {
-            if (!edge.getP1().equals(p) && !edge.getP2().equals(p)) {
-                result.add(new LegalizeCallPair(t3, edge));
-                break;
+        for (Triangle t : triangles) {
+            for (Edge edge : t.getEdges()) {
+                if (!edge.getP1().equals(p) && !edge.getP2().equals(p)) {
+                    result.add(new LegalizeCallPair(t, edge));
+                    break;
+                }
             }
         }
         return result;
@@ -172,37 +157,33 @@ public class DelaunayTriangulation {
             Edge newEdge = new Edge(p1, p2);
             Triangle newT1 = new Triangle(edge.getP1(), p1, p2);
             Triangle newT2 = new Triangle(edge.getP2(), p1, p2);
-            for (Edge e : newT1.getEdges()) {
-                for (Edge f : t1.getEdges()) {
-                    if (e.equals(f)) {
-                        newT1.addAdjacency(e, t1.getAdjacency().get(f));
-                    }
-                }
-                for (Edge f : t2.getEdges()) {
-                    if (e.equals(f)) {
-                        newT1.addAdjacency(e, t2.getAdjacency().get(f));
-                    }
+            for (Triangle t : t1.getAdjacency().values()) {
+                if (!t.equals(t2)) {
+                    newT1.link(t);
                 }
             }
-            for (Edge e : newT2.getEdges()) {
-                for (Edge f : t1.getEdges()) {
-                    if (e.equals(f)) {
-                        newT2.addAdjacency(e, t1.getAdjacency().get(f));
-                    }
+            for (Triangle t : t2.getAdjacency().values()) {
+                if (!t.equals(t1)) {
+                    newT1.link(t);
                 }
-                for (Edge f : t2.getEdges()) {
-                    if (e.equals(f)) {
-                        newT2.addAdjacency(e, t2.getAdjacency().get(f));
-                    }
+            }
+            for (Triangle t : t1.getAdjacency().values()) {
+                if (!t.equals(t2)) {
+                    newT2.link(t);
+                }
+            }
+            for (Triangle t : t2.getAdjacency().values()) {
+                if (!t.equals(t1)) {
+                    newT2.link(t);
                 }
             }
             newT1.addAdjacency(newEdge, newT2);
             newT2.addAdjacency(newEdge, newT1);
 
-            TriangulationDAG td1 = triangulationDAG.locateTriangle(t1);
-            TriangulationDAG td2 = triangulationDAG.locateTriangle(t2);
-            TriangulationDAG td3 = new TriangulationDAG(newT1);
-            TriangulationDAG td4 = new TriangulationDAG(newT2);
+            TriangulationDAG td1 = t1.getTriangulationDAG();
+            TriangulationDAG td2 = t2.getTriangulationDAG();
+            TriangulationDAG td3 = newT1.getTriangulationDAG();
+            TriangulationDAG td4 = newT2.getTriangulationDAG();
             td1.addChild(td3);
             td1.addChild(td4);
             td2.addChild(td3);
@@ -264,30 +245,6 @@ public class DelaunayTriangulation {
         return result;
     }
 
-    private Point getHighestPoint(Set<Point> points) {
-        if (points.isEmpty()) throw new IllegalArgumentException("Cannot get highest point from empty set.");
-        Point result = points.iterator().next();
-        for (Point point : points) {
-            if (point.getY() > result.getY() ||
-                    (point.getY() == result.getY() && point.getX() > result.getX())) {
-                result = point;
-            }
-        }
-        return result;
-    }
-
-    private Point getLowestPoint(Set<Point> points) {
-        if (points.isEmpty()) throw new IllegalArgumentException("Cannot get highest point from empty set.");
-        Point result = points.iterator().next();
-        for (Point point : points) {
-            if (point.getY() < result.getY() ||
-                    (point.getY() == result.getY() && point.getX() > result.getX())) {
-                result = point;
-            }
-        }
-        return result;
-    }
-
     /**
      * Fisher-Yates random shuffling algorithm
      * (Also known as Knuth shuffling,
@@ -326,9 +283,11 @@ public class DelaunayTriangulation {
         return res;
     }
 
-    private boolean pointOnBoundary(Point p, Triangle t) {
-        for (Edge edge : t.getEdges()) {
-            if (p.onEdge(edge)) return true;
+    public boolean pointOnBoundary(Point p, Triangle t) {
+        List<Edge> edges = t.getEdges();
+        for (Edge edge : edges) {
+            boolean temp = p.onEdge(edge);
+            if (temp) return true;
         }
         return false;
     }
