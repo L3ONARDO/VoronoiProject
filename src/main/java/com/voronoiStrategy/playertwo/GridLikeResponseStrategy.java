@@ -24,14 +24,14 @@ public class ColinearUniformResponseStrategy extends PlayerTwoStrategy {
         result.add(point2);
         newconvexHullVertices.add(point2);
 
-        changedx = points.get(1).getX() - EPSILON;
-        changedy = points.get(1).getY() + EPSILON;
+        changedx = points.get(2).getX() - EPSILON;
+        changedy = points.get(2).getY() + EPSILON;
         Point point3 = new Point(OWNER, changedx, changedy);
         result.add(point3);
         newconvexHullVertices.add(point3);
 
-        changedx = points.get(1).getX() + EPSILON;
-        changedy = points.get(1).getY() + EPSILON;
+        changedx = points.get(3).getX() + EPSILON;
+        changedy = points.get(3).getY() + EPSILON;
         Point point4 = new Point(OWNER, changedx, changedy);
         result.add(point4);
         newconvexHullVertices.add(point4);
