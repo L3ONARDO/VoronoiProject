@@ -1,4 +1,4 @@
-package com.voronoiStrategy.playertwo;
+package strategy.playertwo;
 
 import com.model.Point;
 import com.util.MergeSortPointSet;

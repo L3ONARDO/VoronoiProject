@@ -1,8 +1,8 @@
-package com.voronoiStrategy.playertwo;
+package strategy.playertwo;
 
 import com.model.Point;
 import com.util.MathUtils;
-import com.voronoiStrategy.Strategy;
+import strategy.Strategy;
 
 import java.util.List;
 
