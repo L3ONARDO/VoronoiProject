@@ -8,9 +8,9 @@ import java.util.*;
 public class GridLikeResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Set<Point> result = new HashSet<>();
-        List<Point> points = new ArrayList<Point>(inputPoints);
+        Set<Point> result = new HashSet<Point>();
         List<Point> newconvexHullVertices = new ArrayList<Point>();
+        List<Point> points = new ArrayList<Point>(inputPoints);
 
         // Adding the four bouding points of new convex hull
         float changedx = points.get(0).getX() - EPSILON;
@@ -98,8 +98,8 @@ public class GridLikeResponseStrategy extends PlayerTwoStrategy {
             Collections.sort(newedgeList);
             k--;
         }
-        
+    
         return result;
-    }
 
+    }
 }
