@@ -1,21 +1,19 @@
 package strategy.playerone;
 
-import com.model.Point;
+import model.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
-public class ImprovedGridLikeStrategy extends PlayerOneStrategy {
+public class GridLikeImprovedStrategy extends PlayerOneStrategy {
 
     @SuppressWarnings("unchecked")
 	public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Random random = new Random();
-        Set<Point> result = new HashSet<Point>();
+        Set<Point> result = new HashSet<>();
 
-        List<Point> convexHullVertices = new ArrayList<Point>(); //@param convexHullVertices a list for the four vertices of convex hull
+        List<Point> convexHullVertices = new ArrayList<>(); //@param convexHullVertices a list for the four vertices of convex hull
 
         //Plot the first point at the center of the playing area
 

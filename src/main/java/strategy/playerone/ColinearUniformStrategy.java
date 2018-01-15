@@ -1,15 +1,14 @@
-package com.voronoiStrategy.playerone;
+package strategy.playerone;
 
-import com.model.Point;
+import model.Point;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class ColinearUniformStrategy extends PlayerOneStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Set<Point> result = new HashSet<Point>();
+        Set<Point> result = new HashSet<>();
         // Calculate the distance between each point on the mid-line. 
         float mu = xmax / (n + 1);
         float x = 0f;

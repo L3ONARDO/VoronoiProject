@@ -1,7 +1,7 @@
 package strategy.playertwo;
 
-import com.model.Point;
-import com.util.MergeSortPointSet;
+import model.Point;
+import util.MergeSortPointSet;
 
 import java.util.*;
 

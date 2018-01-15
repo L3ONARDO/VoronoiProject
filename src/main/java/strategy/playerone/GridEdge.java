@@ -1,7 +1,7 @@
 package strategy.playerone;
 
 
-import com.model.Point;
+import model.Point;
 
 public class GridEdge implements Comparable<GridEdge> {
     public Point p1, p2;

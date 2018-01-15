@@ -1,8 +1,8 @@
 package strategy.playertwo;
 
-import com.model.Point;
-import com.util.MathUtils;
-import com.util.MergeSortPointSet;
+import model.Point;
+import util.MathUtils;
+import util.MergeSortPointSet;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Set;
 public class ColinearNonUniformResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Set<Point> result = new HashSet<Point>();
+        Set<Point> result = new HashSet<>();
         List<Point> aux = new MergeSortPointSet().sort(inputPoints);
         result.addAll(inputPoints);
         for (int i = 0; i < (n - (n % 2)); i = i + 2) {

@@ -1,6 +1,6 @@
 package strategy.playertwo;
 
-import com.model.Point;
+import model.Point;
 import org.junit.Test;
 
 import java.util.HashSet;

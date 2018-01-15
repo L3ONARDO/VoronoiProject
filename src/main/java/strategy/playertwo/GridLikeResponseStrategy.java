@@ -1,16 +1,15 @@
 package strategy.playertwo;
 
-import com.model.Point;
-import com.util.MergeSortPointSet;
+import model.Point;
 
 import java.util.*;
 
 public class GridLikeResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Set<Point> result = new HashSet<Point>();
-        List<Point> newconvexHullVertices = new ArrayList<Point>();
-        List<Point> points = new ArrayList<Point>(inputPoints);
+        Set<Point> result = new HashSet<>();
+        List<Point> newconvexHullVertices = new ArrayList<>();
+        List<Point> points = new ArrayList<>(inputPoints);
 
         // Adding the four bounding points of new convex hull
         float changedx = points.get(0).getX() - EPSILON;

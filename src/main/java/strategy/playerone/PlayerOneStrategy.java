@@ -1,7 +1,7 @@
-package com.voronoiStrategy.playerone;
+package strategy.playerone;
 
-import com.model.Point;
-import com.voronoiStrategy.Strategy;
+import model.Point;
+import strategy.Strategy;
 
 import java.util.HashSet;
 import java.util.Set;

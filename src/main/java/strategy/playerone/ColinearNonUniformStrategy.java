@@ -1,6 +1,6 @@
-package com.voronoiStrategy.playerone;
+package strategy.playerone;
 
-import com.model.Point;
+import model.Point;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -10,7 +10,7 @@ public class ColinearNonUniformStrategy extends PlayerOneStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Random random = new Random();
-        Set<Point> result = new HashSet<Point>();
+        Set<Point> result = new HashSet<>();
         // Calculate statistics for normal distribution, as well as base x and constant y.
         float mu = xmax / (n + 1);
         float sigma = mu / ((n + 1) * (n + 1));

@@ -1,15 +1,13 @@
-package com.voronoiStrategy.playerone;
+package strategy.playerone;
 
-import com.model.Point;
+import model.Point;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class GridLikeUniformStrategy extends PlayerOneStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
-        Random random = new Random();
-        Set<Point> result = new HashSet<Point>();
+        Set<Point> result = new HashSet<>();
         
         // Check if number of points is 2
         if (n == 2){

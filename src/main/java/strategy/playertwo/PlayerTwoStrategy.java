@@ -1,7 +1,7 @@
 package strategy.playertwo;
 
-import com.model.Point;
-import com.util.MathUtils;
+import model.Point;
+import util.MathUtils;
 import strategy.Strategy;
 
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.List;
 public abstract class PlayerTwoStrategy implements Strategy {
     protected static final boolean OWNER = false;
     protected static final float EPSILON = 1.0e-2f;
-    protected MathUtils mathUtils = new MathUtils();
 
     protected Point[] findLargestGap(List<Point> points) {
         if (points.size() < 2) throw new IllegalArgumentException("Should have at least two points to find a gap.");
