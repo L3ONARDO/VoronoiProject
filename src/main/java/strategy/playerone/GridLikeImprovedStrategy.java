@@ -23,24 +23,39 @@ public class GridLikeImprovedStrategy extends PlayerOneStrategy {
         result.add(midpoint);
         
         //Plot 4 points along (3/4)th of each diagonal from the center to corners.
-        float x = xmax / 4;
-        float y = ymax / 4;
-        for (int i=0; i < 2; i++){
-            for (int j=0; j < 2; j++ ){
-                Point point = new Point(OWNER, x, y);
-                result.add(point);
-                convexHullVertices.add(point);
-                x += xdist;    
-            }
-            y += ydist;
-            x = (xdist / 2);
-        }
+        float d = (float) Math.sqrt(xdist * xdist + ydist * ydist);
+        float dy = (float) (0.25f * Math.sin(Math.PI / 4.0) * d);
+        float dx = (float) (0.25f * Math.cos(Math.PI / 4.0) * d);
+        Point a = new Point(OWNER, dx, dy);
+        Point b = new Point(OWNER, xmax - dx, dy);
+        Point c = new Point(OWNER, dx,ymax - dy);
+        Point e = new Point(OWNER, xmax - dx, ymax -dy);
+        result.add(a);
+        result.add(b);
+        result.add(c);
+        result.add(e);
+        convexHullVertices.add(a);
+        convexHullVertices.add(b);
+        convexHullVertices.add(c);
+        convexHullVertices.add(e);
+//        float x = xmax / 4;
+//        float y = ymax / 4;
+//        for (int i=0; i < 2; i++){
+//            for (int j=0; j < 2; j++ ){
+//                Point point = new Point(OWNER, x, y);
+//                result.add(point);
+//                convexHullVertices.add(point);
+//                x += xdist;
+//            }
+//            y += ydist;
+//            x = (xdist / 2);
+//        }
 
         //Plot the remaining points iteratively on the convex hull (square). 
 
         		//1. Create a list of all the edges in the convex hull. 
 
-        List<GridEdge> edgeList = new ArrayList<GridEdge>();
+        List<GridEdge> edgeList = new ArrayList<>();
         
         		//2. Add the four bounding edges of convex hull to the list. 
         			//Initialize the flagX attribute using setFlag() to get the orientation of the edge. 
