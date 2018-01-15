@@ -5,7 +5,7 @@ import com.util.MergeSortPointSet;
 
 import java.util.*;
 
-public class ColinearUniformResponseStrategy extends PlayerTwoStrategy {
+public class GridLikeResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<>();
