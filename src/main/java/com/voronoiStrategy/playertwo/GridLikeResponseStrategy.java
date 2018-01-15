@@ -98,5 +98,8 @@ public class GridLikeResponseStrategy extends PlayerTwoStrategy {
             Collections.sort(newedgeList);
             k--;
         }
+        
+        return result;
+    }
 
 }
