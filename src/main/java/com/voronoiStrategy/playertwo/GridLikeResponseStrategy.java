@@ -9,7 +9,7 @@ public class GridLikeResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<>();
-        List<Point> points = new ArrayList<Point>(inputpoints);
+        List<Point> points = new ArrayList<Point>(inputPoints);
         List<Point> newconvexHullVertices = new ArrayList<Point>();
 
         // Adding the four bouding points of new convex hull
