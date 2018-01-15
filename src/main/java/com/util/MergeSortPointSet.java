@@ -17,6 +17,23 @@ public class MergeSortPointSet {
 
     private int number;
 
+    public List<Point> sort(List<Point> points) {
+        List<Point> result = new ArrayList<Point>();
+        this.points = new Point[points.size()];
+        int i = 0;
+        for (Point p : points) {
+            this.points[i] = p;
+            i++;
+        }
+        number = points.size();
+        this.helper = new Point[number];
+        mergesort(0, number - 1);
+        for (Point p : this.points) {
+            result.add(p);
+        }
+        return result;
+    }
+
     public List<Point> sort(Set<Point> points) {
         List<Point> result = new ArrayList<Point>();
         this.points = new Point[points.size()];
