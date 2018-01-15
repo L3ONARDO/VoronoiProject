@@ -12,7 +12,7 @@ public class GridLikeResponseStrategy extends PlayerTwoStrategy {
         List<Point> newconvexHullVertices = new ArrayList<Point>();
         List<Point> points = new ArrayList<Point>(inputPoints);
 
-        // Adding the four bouding points of new convex hull
+        // Adding the four bounding points of new convex hull
         float changedx = points.get(0).getX() - EPSILON;
         float changedy = points.get(0).getY() + EPSILON;
         Point point1 = new Point(OWNER, changedx, changedy);
