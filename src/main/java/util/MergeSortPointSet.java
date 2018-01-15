@@ -1,9 +1,8 @@
-package com.util;
+package util;
 
-import com.model.Point;
+import model.Point;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 

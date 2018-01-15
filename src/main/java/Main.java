@@ -1,6 +1,6 @@
-import com.model.DCEL;
-import com.model.HalfEdge;
-import com.model.HalfEdgeBuilder;
+import model.DCEL;
+import model.HalfEdge;
+import model.HalfEdgeBuilder;
 
 public class Main {
 

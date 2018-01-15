@@ -1,6 +1,6 @@
-package com.util;
+package util;
 
-import com.model.Point;
+import model.Point;
 
 import java.util.ArrayList;
 import java.util.List;

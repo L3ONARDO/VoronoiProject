@@ -1,4 +1,4 @@
-package com.model;
+package model;
 
 public class DCEL {
     private HalfEdge head, tail;

@@ -1,6 +1,6 @@
-package com.util;
+package util;
 
-import com.model.Point;
+import model.Point;
 
 public class Line  {
     private Point p1;
