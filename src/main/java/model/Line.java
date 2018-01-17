@@ -26,6 +26,15 @@ public class Line {
         return arctan;
     }
 
+//    public float angleBetween2Lines(Line line1, Line line2)
+//    {
+//        float angle1 = Math.atan2(line1.getY1() - line1.getY2(),
+//                line1.getX1() - line1.getX2());
+//        double angle2 = Math.atan2(line2.getY1() - line2.getY2(),
+//                line2.getX1() - line2.getX2());
+//        return angle1-angle2;
+//    }
+
     private boolean isVertical() {
         return (b == 0 && a != 0);
     }
@@ -37,6 +46,8 @@ public class Line {
     public float solveForX(float y) {
         return (-c - b * y) / a;
     }
+
+    public float solveForY(float x) { return  (-c - a*x)/b; }
 
     public static Point intersection(Line l1, Line l2) {
         if (l1.b != 0) {

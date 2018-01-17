@@ -11,6 +11,23 @@ public class Edge {
         this.p1 = p1;
         this.p2 = p2;
         this.triangles = new ArrayList<>();
+
+    }
+
+    public Point getLeft(){
+        if(p1.getX() > p2.getX()) {
+            Point temp = p2;
+            p2 = p1;
+            p1 = temp;
+        }
+        return p1;
+    }
+
+    public Point getRight(){
+        if(p1.getX() > p2.getX()) {
+            return p1;
+        }
+        return p2;
     }
 
     public Point getP1() {
@@ -23,6 +40,15 @@ public class Edge {
 
     public List<Triangle> getTriangles() {
         return triangles;
+    }
+
+    public Point getBisectionalPoint() {
+        return new Point(p1.getOwner(),(p1.getX() + p2.getX()) / 2,
+                (p1.getY() + p2.getY()) / 2);
+    }
+
+    public Line getLine() {
+        return new Line(p1, p2);
     }
 
     @Override
