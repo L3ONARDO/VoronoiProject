@@ -1,6 +1,6 @@
 package model;
 
-public class Line {
+public class Line implements LineInterface {
 
     private float a, b, c;
 
@@ -11,11 +11,12 @@ public class Line {
     }
 
     public Line(Point p1, Point p2) {
-        this.a = p1.getY() - p2.getY();
-        this.b = p2.getX() - p1.getY();
-        this.c = p1.getX() * p2.getY() - p2.getX() * p1.getY();
+        this.a = (p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        this.b = -1f;
+        float px = p1.getX() + ((p2.getX() - p1.getX()) / 2f);
+        float py = p1.getY() + ((p2.getY() - p1.getY()) / 2f);
+        this.c = py - this.a * px;
     }
-
 
     public float getAngle() {
         if (isVertical()) return (float) Math.PI / 2.0f;
@@ -35,7 +36,8 @@ public class Line {
 //        return angle1-angle2;
 //    }
 
-    private boolean isVertical() {
+    public boolean isVertical() {
+        if (a == Float.NEGATIVE_INFINITY || a == Float.POSITIVE_INFINITY) return true;
         return (b == 0 && a != 0);
     }
 
@@ -49,27 +51,33 @@ public class Line {
 
     public float solveForY(float x) { return  (-c - a*x)/b; }
 
-    public static Point intersection(Line l1, Line l2) {
-        if (l1.b != 0) {
-            float f = l2.a - l2.b*l1.a/l1.b;
+    public Point intersection(LineInterface line) {
+        if (line instanceof VerticalLine) {
+            if (isVertical()) return null;
+            VerticalLine verticalLine = (VerticalLine) line;
+            return new Point(true, verticalLine.getX(), (-a / b) * verticalLine.getX() - (c / b));
+        }
+        Line l2 = (Line) line;
+        if (b != 0) {
+            float f = l2.a - l2.b*a/b;
             if (f == 0) {
                 return null;
             } else {
-                float x = (-l2.c + l2.b*l1.c/l1.b) / f;
-                float y = (-l1.c - l1.a*x) / l1.b;
+                float x = (-l2.c + l2.b*c/b) / f;
+                float y = (-c - a*x) / b;
 
                 return new Point(true, x, y);
             }
         } else {
-            if (l1.a == 0) {
+            if (a == 0) {
                 return null;
             } else {
-                float f = l2.b - l2.a*l1.b/l1.a;
+                float f = l2.b - l2.a*b/a;
                 if (f == 0) {
                     return null;
                 } else {
-                    float y = (-l2.c + l2.a*l1.c/l1.a) / f;
-                    float x = (-l1.c - l1.b*y) / l1.a;
+                    float y = (-l2.c + l2.a*c/a) / f;
+                    float x = (-c - b*y) / a;
 
                     return new Point(true, x, y);
                 }

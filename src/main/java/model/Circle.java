@@ -22,7 +22,7 @@ public class Circle {
                 c.getX()*c.getX() - a.getX()*a.getX() +
                         c.getY()*c.getY() - a.getY()*a.getY());
 
-        center = Line.intersection(l1, l2);
+        center = l1.intersection(l2);
         if (center != null) radius = center.dist(a);
     }
 

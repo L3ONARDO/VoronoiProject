@@ -12,7 +12,7 @@ public class ColinearNonUniformResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<>();
-        List<Point> aux = new MergeSortPointSet().sort(inputPoints);
+        List<Point> aux = new MergeSortPointSet().sort(inputPoints, false);
         result.addAll(inputPoints);
         for (int i = 0; i < (n - (n % 2)); i = i + 2) {
             Point[] largestGap = findLargestGap(aux);

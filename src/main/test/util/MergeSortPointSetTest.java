@@ -22,7 +22,7 @@ public class MergeSortPointSetTest {
         points.add(p1);
         points.add(p2);
         points.add(p3);
-        List<Point> result = instance.sort(points);
+        List<Point> result = instance.sort(points, false);
         assertEquals(3, result.size());
         assertTrue(result.get(0).equals(p1));
         assertTrue(result.get(1).equals(p3));

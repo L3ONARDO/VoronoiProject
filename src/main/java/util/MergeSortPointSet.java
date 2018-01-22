@@ -16,7 +16,7 @@ public class MergeSortPointSet {
 
     private int number;
 
-    public List<Point> sort(List<Point> points) {
+    public List<Point> sort(List<Point> points, boolean sortY) {
         List<Point> result = new ArrayList<Point>();
         this.points = new Point[points.size()];
         int i = 0;
@@ -26,14 +26,14 @@ public class MergeSortPointSet {
         }
         number = points.size();
         this.helper = new Point[number];
-        mergesort(0, number - 1);
+        mergesort(0, number - 1, sortY);
         for (Point p : this.points) {
             result.add(p);
         }
         return result;
     }
 
-    public List<Point> sort(Set<Point> points) {
+    public List<Point> sort(Set<Point> points, boolean sortY) {
         List<Point> result = new ArrayList<Point>();
         this.points = new Point[points.size()];
         int i = 0;
@@ -43,28 +43,28 @@ public class MergeSortPointSet {
         }
         number = points.size();
         this.helper = new Point[number];
-        mergesort(0, number - 1);
+        mergesort(0, number - 1, sortY);
         for (Point p : this.points) {
             result.add(p);
         }
         return result;
     }
 
-    private void mergesort(int low, int high) {
+    private void mergesort(int low, int high, boolean sortY) {
         // check if low is smaller than high, if not then the array is sorted
         if (low < high) {
             // Get the index of the element which is in the middle
             int middle = low + (high - low) / 2;
             // Sort the left side of the array
-            mergesort(low, middle);
+            mergesort(low, middle, sortY);
             // Sort the right side of the array
-            mergesort(middle + 1, high);
+            mergesort(middle + 1, high, sortY);
             // Combine them both
-            merge(low, middle, high);
+            merge(low, middle, high, sortY);
         }
     }
 
-    private void merge(int low, int middle, int high) {
+    private void merge(int low, int middle, int high, boolean sortY) {
         // Copy both parts into the helper array
         for (int i = low; i <= high; i++) {
             helper[i] = points[i];
@@ -76,12 +76,22 @@ public class MergeSortPointSet {
         // Copy the smallest values from either the left or the right side back
         // to the original array
         while (i <= middle && j <= high) {
-            if (helper[i].getX() <= helper[j].getX()) {
-                points[k] = helper[i];
-                i++;
+            if (sortY) {
+                if (helper[i].getY() <= helper[j].getY()) {
+                    points[k] = helper[i];
+                    i++;
+                } else {
+                    points[k] = helper[j];
+                    j++;
+                }
             } else {
-                points[k] = helper[j];
-                j++;
+                if (helper[i].getX() <= helper[j].getX()) {
+                    points[k] = helper[i];
+                    i++;
+                } else {
+                    points[k] = helper[j];
+                    j++;
+                }
             }
             k++;
         }

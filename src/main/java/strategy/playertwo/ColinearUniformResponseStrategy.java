@@ -9,7 +9,7 @@ public class ColinearUniformResponseStrategy extends PlayerTwoStrategy {
 
     public Set<Point> apply(int n, Set<Point> inputPoints, float xmax, float ymax) {
         Set<Point> result = new HashSet<>();
-        List<Point> points = new MergeSortPointSet().sort(inputPoints);
+        List<Point> points = new MergeSortPointSet().sort(inputPoints, false);
         List<Point> abovePoints = new ArrayList<>();
         List<Point> belowPoints = new ArrayList<>();
         int m = inputPoints.size();
@@ -41,7 +41,7 @@ public class ColinearUniformResponseStrategy extends PlayerTwoStrategy {
                 Point rightOf = findRightOfPoint(middlePoint, inputPoints);
                 Point newPoint = new Point(OWNER, leftOf.getX() + ((rightOf.getX() - leftOf.getX()) / 2f), aboveY);
                 abovePoints.add(newPoint);
-                abovePoints = new MergeSortPointSet().sort(abovePoints);
+                abovePoints = new MergeSortPointSet().sort(abovePoints, false);
                 result.add(newPoint);
             } else {
                 addAbove = true;
@@ -51,7 +51,7 @@ public class ColinearUniformResponseStrategy extends PlayerTwoStrategy {
                 Point rightOf = findRightOfPoint(middlePoint, inputPoints);
                 Point newPoint = new Point(OWNER, leftOf.getX() + ((rightOf.getX() - leftOf.getX()) / 2f), belowY);
                 belowPoints.add(newPoint);
-                belowPoints = new MergeSortPointSet().sort(belowPoints);
+                belowPoints = new MergeSortPointSet().sort(belowPoints, false);
                 result.add(newPoint);
             }
             n--;

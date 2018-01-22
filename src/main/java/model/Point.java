@@ -8,6 +8,8 @@ public class Point {
 
     public Point(boolean owner, float x, float y) {
         this.owner = owner;
+        if (Math.abs(x) < 1E-4) x = 0;
+        if (Math.abs(y) < 1E-4) y = 0;
         this.x = x;
         this.y = y;
     }
@@ -35,10 +37,15 @@ public class Point {
     }
 
     public boolean onEdge(Edge edge) {
-        if (edge.getP1().getX() == edge.getP2().getX()) return edge.getP1().getX() == x;
+        if (edge.getP1().getX() == edge.getP2().getX()) return edge.getP1().getX() == x && yInRange(edge.getP1().getY(), edge.getP2().getY());
         float a1 = (y - edge.getP1().getY()) / (x - edge.getP1().getX());
         float a2 = (y - edge.getP2().getY()) / (x - edge.getP2().getX());
-        return a1 == a2 && xInRange(edge.getP1().getX(), edge.getP2().getX());
+        float diff = Math.abs(a1 - a2);
+        return (diff < 1E-4) && xInRange(edge.getP1().getX(), edge.getP2().getX());
+    }
+
+    private boolean yInRange(float y1, float y2) {
+        return (y1 <= y && y <= y2) || (y2 <= y && y <= y1);
     }
 
     private boolean xInRange(float x1, float x2) {

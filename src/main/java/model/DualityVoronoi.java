@@ -39,7 +39,7 @@ public class DualityVoronoi {
             edgeBuffer = t.getEdges();
             Edge edge1 = edgeBuffer.get(0);
             Edge edge2 = edgeBuffer.get(1);
-            Point mass = Line.intersection(edge1.getLine(), edge2.getLine());
+            Point mass = edge1.getLine().intersection(edge2.getLine());
 
 
             for(Edge e: t.getEdges()){
@@ -158,7 +158,7 @@ public class DualityVoronoi {
             edgeBuffer = t.getEdges();
             Edge edge1 = edgeBuffer.get(0);
             Edge edge2 = edgeBuffer.get(1);
-            Point mass = Line.intersection(edge1.getLine(), edge2.getLine());
+            Point mass = edge1.getLine().intersection(edge2.getLine());
             voronoiPoints.add(mass);
             edgeBuffer.clear();
         }

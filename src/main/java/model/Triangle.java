@@ -41,7 +41,8 @@ public class Triangle {
         float A3 = area(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p.getX(), p.getY());
 
         /* Check if sum of A1, A2 and A3 is same as A */
-        return (A == A1 + A2 + A3);
+        float diff = Math.abs(A - (A1 + A2 + A3));
+        return diff < 0.001;
     }
 
     /* A utility function to calculate area of triangle
