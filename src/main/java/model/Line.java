@@ -84,4 +84,17 @@ public class Line implements LineInterface {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Line)) return false;
+        Line line = (Line) o;
+        return equalUpToMinusZero(a, line.a) && equalUpToMinusZero(b, line.b) && equalUpToMinusZero(c, line.c);
+    }
+
+    private boolean equalUpToMinusZero(float a, float b) {
+        if (a == b) return true;
+        if (a == 0.0f && b == -0.0f || a == -0.0f && b == 0.0f) return true;
+        return false;
+    }
 }

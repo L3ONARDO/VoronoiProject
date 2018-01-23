@@ -36,6 +36,7 @@ public class VoronoiDiagram {
                 delaunayEdges.add(edge);
             }
         }
+        lines = removeDuplicateLines(lines);
 
         // Calculate intersections between bisectors and boundaries and construct edges for them
         List<Edge> potentialVoronoiEdges = new ArrayList<>();
@@ -76,7 +77,6 @@ public class VoronoiDiagram {
                 Point p1 = edgeIntersection.edge.getP1();
                 Point intersection = edgeIntersection.point;
                 Point p2 = edgeIntersection.edge.getP2();
-                // TODO: This line could be problematic due to precision, might need some error tolerance
                 float da = p1.distanceTo(intersection);
                 float db = p2.distanceTo(intersection);
                 float diff = Math.abs(da - db);
@@ -97,6 +97,18 @@ public class VoronoiDiagram {
         return result;
     }
 
+    private List<LineInterface> removeDuplicateLines(List<LineInterface> lines) {
+        List<LineInterface> result = new ArrayList<>();
+        for (LineInterface l : lines) {
+            boolean add = true;
+            for (LineInterface m : result) {
+                if (l.equals(m)) add = false;
+            }
+            if (add) result.add(l);
+        }
+        return result;
+    }
+
     private boolean isBoundaryEdge(Edge potentialEdge, float xmin, float xmax, float ymin, float ymax) {
         return (potentialEdge.getP1().getX() == xmin && potentialEdge.getP2().getX() == xmin)
                 || (potentialEdge.getP1().getX() == xmax && potentialEdge.getP2().getX() == xmax)
@@ -106,7 +118,7 @@ public class VoronoiDiagram {
 
     private boolean isInBounds(Point intersection, float xmin, float xmax, float ymin, float ymax) {
         return xmin <= intersection.getX() && intersection.getX() <= xmax
-                && ymin <= intersection.getX() && intersection.getY() <= ymax;
+                && ymin <= intersection.getY() && intersection.getY() <= ymax;
     }
 
     private void polygonWalk(List<Edge> edges, Edge edge, Polygon polygon, float xmin, float xmax, float ymin, float ymax) {
