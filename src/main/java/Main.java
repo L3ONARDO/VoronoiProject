@@ -1,18 +1,25 @@
-import model.DCEL;
-import model.HalfEdge;
-import model.HalfEdgeBuilder;
+import computation.VoronoiDiagramAnalyzer;
+import model.*;
+import strategy.StrategyPair;
+import strategy.playerone.ColinearUniformStrategy;
+import strategy.playertwo.ColinearUniformResponseStrategy;
+
+import java.util.List;
+import java.util.Set;
 
 public class Main {
 
     public static void main(String[] args) {
-        DCEL dcel = new DCEL();
-        HalfEdgeBuilder heb = new HalfEdgeBuilder();
-        HalfEdge e1 = heb.buildPair(true, 0, 0, 0, 1);
-        HalfEdge e2 = heb.buildPair(true, 0, 1, 1, 0);
-        HalfEdge e3 = heb.buildPair(true, 1, 0, 0, 0);
-        dcel.addBack(e2);
-        dcel.addBack(e3);
-        dcel.addFront(e1);
-        System.out.println("Done!");
+        float xmin = -10000f;
+        float xmax = 10000f;
+        float ymin = -10000f;
+        float ymax = 10000f;
+        StrategyPair strategyPair = new StrategyPair(new ColinearUniformStrategy(), new ColinearUniformResponseStrategy());
+        Set<Point> input = strategyPair.apply(100, 99, xmax, ymax);
+        VoronoiDiagram voronoiDiagram = new VoronoiDiagram();
+        List<Polygon> result = voronoiDiagram.calculate(input, xmin, xmax, ymin, ymax);
+        VoronoiDiagramAnalyzer voronoiDiagramAnalyzer = new VoronoiDiagramAnalyzer();
+        float[] proportions = voronoiDiagramAnalyzer.analyze(result, xmin, xmax, ymin, ymax);
+        System.out.println(result.size());
     }
 }

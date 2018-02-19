@@ -1,8 +1,12 @@
 package util;
 
+import model.LineInterface;
 import model.Point;
+import model.Polygon;
+import model.VerticalLine;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

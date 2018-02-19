@@ -92,4 +92,20 @@ public class Point {
         }
         return result;
     }
+
+    public boolean inPolygon(Polygon polygon) {
+        int i, j = polygon.getPoints().size() - 1;
+        boolean oddNodes = false;
+        for (i = 0; i < polygon.getPoints().size(); i++) {
+            Point vi = polygon.getPoints().get(i);
+            Point vj = polygon.getPoints().get(j);
+            if (vi.getY() < y && vj.getY() >= y || vj.getY() < y && vi.getY() >= y) {
+                if (vi.getX() + (y - vi.getY()) / (vj.getY() - vi.getY()) * (vj.getX() - vi.getX()) < x) {
+                    oddNodes = !oddNodes;
+                }
+            }
+            j = i;
+        }
+        return oddNodes;
+    }
 }

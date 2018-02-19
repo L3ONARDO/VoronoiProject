@@ -205,6 +205,8 @@ public class DelaunayTriangulation {
         float ymax = getMaxY(points);
         float dx = xmax - xmin;
         float dy = ymax - ymin;
+        if (dx < 1f) dx = 1f / dx;
+        if (dy < 1f) dy = 1f / dy;
 
         Point p = new Point(true, xmin - 10f * dx, ymin - dy);
         Point q = new Point(true, xmin + 0.5f * dx, ymax + 2.0f * dy);
