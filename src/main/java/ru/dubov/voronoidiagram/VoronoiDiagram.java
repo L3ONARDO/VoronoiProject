@@ -23,7 +23,7 @@ public class VoronoiDiagram {
      * @param points Point set
      * @return Voronoi diagram for p
      */
-    public static ArrayList<Polygon> viaHalfplanesIntersection(List<Point> points, double xmin, double xmax, double ymin, double ymax) {
+    public static ArrayList<Polygon> viaHalfplanesIntersection(List<Point> points) {
         
         ArrayList<Polygon> res = new ArrayList<Polygon>();
         

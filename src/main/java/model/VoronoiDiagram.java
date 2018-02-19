@@ -10,7 +10,7 @@ public class VoronoiDiagram {
 
     public List<Polygon> calculate(Set<Point> inputPoints, float xmin, float xmax, float ymin, float ymax) {
         List<ru.dubov.primitives.Point> dubovPoints = convertPoints(inputPoints);
-        List<ru.dubov.primitives.Polygon> dubovPolygons = ru.dubov.voronoidiagram.VoronoiDiagram.viaHalfplanesIntersection(dubovPoints, xmin, xmax, ymin, ymax);
+        List<ru.dubov.primitives.Polygon> dubovPolygons = ru.dubov.voronoidiagram.VoronoiDiagram.viaHalfplanesIntersection(dubovPoints);
         List<Polygon> polygons = convertPolygons(dubovPolygons);
         // Todo: Calculate intersection with boundary
         for (Polygon polygon : polygons) {
