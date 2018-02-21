@@ -21,14 +21,16 @@ public class BenchmarkingResponseStrategy extends PlayerTwoStrategy {
         Point center = new Point(OWNER, xmax / 2.0f, ymax / 2.0f);
         for (int i = 0; i < n; i++) {
             Point distanceMaximalPoint = findDistanceMaximizingPoint(aux, result, center);
-            Line distanceMaximalToCenter = new Line(distanceMaximalPoint, center);
-            List<Point> convexHull = mathUtils.orderByGiftWrapping(inputPoints);
-            List<Point> intersectionsWithHull = mathUtils.findIntersectionsBetweenLineAndShape(convexHull, distanceMaximalToCenter);
-            if (intersectionsWithHull.isEmpty()) throw new IllegalStateException("distanceMaximalToCenter should have an intersection with convex hull.");
-            Point intersectionWithHull = intersectionsWithHull.get(0);
-            if (distanceMaximalPoint.distanceTo(intersectionsWithHull.get(1)) < distanceMaximalPoint.distanceTo(intersectionWithHull)) intersectionWithHull  = intersectionsWithHull.get(1);
+//            Line distanceMaximalToCenter = new Line(distanceMaximalPoint, center);
+//            List<Point> convexHull = mathUtils.orderByGiftWrapping(inputPoints);
+//            List<Point> intersectionsWithHull = mathUtils.findIntersectionsBetweenLineAndShape(convexHull, distanceMaximalToCenter);
+//            //if (intersectionsWithHull.isEmpty()) throw new IllegalStateException("distanceMaximalToCenter should have an intersection with convex hull.");
+//            System.out.println(intersectionsWithHull.size());
+//            Point intersectionWithHull = intersectionsWithHull.get(0);
+//            if (distanceMaximalPoint.distanceTo(intersectionsWithHull.get(1)) < distanceMaximalPoint.distanceTo(intersectionWithHull)) intersectionWithHull  = intersectionsWithHull.get(1);
             float signX = 1.0f;
             float signY = 1.0f;
+            Point intersectionWithHull = distanceMaximalPoint;
             if (intersectionWithHull.getX() < center.getX()) {
                 signX = -1.0f;
             }

@@ -26,6 +26,16 @@ public class Site extends ASite {
 	double deltaX;
 	double deltaY;
 	double alpha;
+	boolean owner;
+
+	public boolean getOwner() {
+		return owner;
+	}
+
+	public void setOwner(boolean owner) {
+		this.owner = owner;
+	}
+
 	/**
 	 * This attribute is used to mark the sites, which are only added to bound the Voronoi diagram.
 	 */

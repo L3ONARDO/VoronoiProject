@@ -1,44 +1,49 @@
-import computation.VoronoiDiagramAnalyzer;
-import kn.uni.voronoitreemap.datastructure.OpenList;
-import kn.uni.voronoitreemap.diagram.PowerDiagram;
-import kn.uni.voronoitreemap.j2d.PolygonSimple;
-import kn.uni.voronoitreemap.j2d.Site;
-import model.*;
+import experiment.Experiment;
+import experiment.NumberOfPlayerTwoPointsColinear;
 import strategy.StrategyPair;
+import strategy.playerone.ColinearNonUniformStrategy;
 import strategy.playerone.ColinearUniformStrategy;
+import strategy.playerone.GridLikeImprovedStrategy;
 import strategy.playerone.GridLikeUniformStrategy;
+import strategy.playertwo.BenchmarkingResponseStrategy;
+import strategy.playertwo.ColinearNonUniformResponseStrategy;
 import strategy.playertwo.ColinearUniformResponseStrategy;
-
-import java.util.List;
-import java.util.Set;
+import strategy.playertwo.GridLikeResponseStrategy;
 
 public class Main {
 
     public static void main(String[] args) {
-        GridLikeUniformStrategy gridLikeUniformStrategy = new GridLikeUniformStrategy();
-        Set<Point> input = gridLikeUniformStrategy.apply(196, null, 1f, 1f);
+        float xmin = 0f;
+        float xmax = 1f;
+        float ymin = 0f;
+        float ymax = 1f;
+        StrategyPair colinearNonUniformVsBenchmarking = new StrategyPair(new ColinearNonUniformStrategy(), new BenchmarkingResponseStrategy());
+        StrategyPair colinearNonUniformVsResponse = new StrategyPair(new ColinearNonUniformStrategy(), new ColinearNonUniformResponseStrategy());
+        StrategyPair colinearUniformVsBenchmarking = new StrategyPair(new ColinearUniformStrategy(), new BenchmarkingResponseStrategy());
+        StrategyPair colinearUniformVsResponse = new StrategyPair(new ColinearUniformStrategy(), new ColinearUniformResponseStrategy());
+        StrategyPair gridLikeUniformVsBenchmarking = new StrategyPair(new GridLikeUniformStrategy(), new BenchmarkingResponseStrategy());
+        StrategyPair gridLikeUniformVsResponse = new StrategyPair(new GridLikeUniformStrategy(), new GridLikeResponseStrategy());
+        StrategyPair gridLikeImprovedVsBenchmarking = new StrategyPair(new GridLikeImprovedStrategy(), new BenchmarkingResponseStrategy());
+        StrategyPair gridLikeImprovedVsResponse = new StrategyPair(new GridLikeImprovedStrategy(), new GridLikeResponseStrategy());
 
-        PowerDiagram diagram = new PowerDiagram();
-
-        OpenList sites = new OpenList();
-
-        PolygonSimple rootPolygon = new PolygonSimple();
-        rootPolygon.add(0, 0);
-        rootPolygon.add(1, 0);
-        rootPolygon.add(1, 1);
-        rootPolygon.add(0, 1);
-
-        for (Point point : input) {
-            Site site = new Site(point.getX(), point.getY());
-            site.setWeight(0);
-            sites.add(site);
-        }
-
-        diagram.setSites(sites);
-        diagram.setClipPoly(rootPolygon);
-
-        diagram.computeDiagram();
-        List<Polygon> result = diagram.getPolygons();
-        System.out.println();
+        Experiment experiment = new Experiment();
+        double[] pop = {2, 10, 100, 1000};
+//        experiment.perform(0, colinearNonUniformVsBenchmarking, xmin, xmax, ymin, ymax, pop,
+//                new NumberOfPlayerTwoPointsColinear(), "colinearNonUniform",
+//                "benchmarking", false);
+//        experiment.perform(1, colinearNonUniformVsResponse, xmin, xmax, ymin, ymax, pop,
+//                new NumberOfPlayerTwoPointsColinear(), "colinearNonUniform",
+//                "colinearNonUniformResponse", false);
+//        experiment.perform(2, colinearUniformVsBenchmarking, xmin, xmax, ymin, ymax, pop,
+//                new NumberOfPlayerTwoPointsColinear(), "colinearUniform",
+//                "benchmarking", false);
+        // This one does not seem to work.
+//        experiment.perform(3, colinearUniformVsResponse, xmin, xmax, ymin, ymax, pop,
+//                new NumberOfPlayerTwoPointsColinear(), "colinearUniform",
+//                "colinearUniformResponse", false);
+        double[] pop2 = {4, 36, 256, 1024};
+        experiment.perform(4, gridLikeUniformVsBenchmarking, xmin, xmax, ymin, ymax, pop2,
+                new NumberOfPlayerTwoPointsColinear(), "gridLikeUniform",
+                "benchmarking", false);
     }
 }

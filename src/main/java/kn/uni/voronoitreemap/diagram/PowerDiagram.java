@@ -410,14 +410,26 @@ public class PowerDiagram {
 
 	public List<Polygon> getPolygons() {
 		List<Polygon> result = new ArrayList<>();
+		int l = 0;
+		int j = 0;
 		for (Site site : sites) {
+			System.out.println("Site: " + l);
 			Polygon polygon = new Polygon();
+			polygon.setOwner(site.getOwner());
 			PolygonSimple simplePolygon = site.getPolygon();
-			for (int i = 0; i < simplePolygon.length; i++) {
-				Point point = new Point(true, (float) simplePolygon.getXPoints()[i], (float) simplePolygon.getYPoints()[i]);
-				if (!polygon.deepContainsPoint(point)) polygon.addPoint(point);
+			if (simplePolygon == null) {
+				System.out.println();
 			}
-			result.add(polygon);
+			if (simplePolygon != null) {
+				System.out.println("Non-null simplePolygon: " + j);
+				for (int i = 0; i < simplePolygon.length; i++) {
+					Point point = new Point(true, (float) simplePolygon.getXPoints()[i], (float) simplePolygon.getYPoints()[i]);
+					if (!polygon.deepContainsPoint(point)) polygon.addPoint(point);
+				}
+				result.add(polygon);
+				j++;
+			}
+			l++;
 		}
 		return result;
 	}
