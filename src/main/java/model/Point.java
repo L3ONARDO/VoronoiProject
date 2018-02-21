@@ -94,6 +94,7 @@ public class Point {
     }
 
     public boolean inPolygon(Polygon polygon) {
+        if (onBoundary(polygon)) return true;
         int i, j = polygon.getPoints().size() - 1;
         boolean oddNodes = false;
         for (i = 0; i < polygon.getPoints().size(); i++) {
@@ -107,5 +108,15 @@ public class Point {
             j = i;
         }
         return oddNodes;
+    }
+
+    private boolean onBoundary(Polygon polygon) {
+        for (int i = 0; i < polygon.getPoints().size(); i++) {
+            Point p1 = polygon.getPoints().get(i);
+            Point p2 = polygon.getPoints().get((i + 1) % polygon.getPoints().size());
+            Edge edge = new Edge(p1, p2);
+            if (onEdge(edge)) return true;
+        }
+        return false;
     }
 }

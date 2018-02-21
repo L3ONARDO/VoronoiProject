@@ -1,5 +1,7 @@
 package model;
 
+import util.MathUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,9 @@ public class Polygon {
 
     public boolean deepContainsPoint(Point point) {
         for (Point p  : points) {
-            if (p == point || (p.getX() == point.getX() && p.getY() == point.getY())) return true;
+            float xdiff = Math.abs(p.getX() - point.getX());
+            float ydiff = Math.abs(p.getY() - point.getY());
+            if (xdiff < MathUtils.EPSILON && ydiff < MathUtils.EPSILON) return true;
         }
         return false;
     }

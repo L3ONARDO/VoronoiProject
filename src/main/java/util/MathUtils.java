@@ -17,6 +17,17 @@ public class MathUtils {
 
     public static final float EPSILON = 0.0001f;
 
+    public Polygon orderByGiftWrapping(Polygon polygon) {
+        Set<Point> input = new HashSet<>();
+        input.addAll(polygon.getPoints());
+        List<Point> aux = orderByGiftWrapping(input);
+        Polygon result = new Polygon();
+        for (Point p : aux) {
+            result.addPoint(p);
+        }
+        return result;
+    }
+
     /**
      * Sorts a set of points such that they make up a convex polygon, based on Gift Wrapping algorithm, see:
      * <a href="https://en.wikipedia.org/wiki/Gift_wrapping_algorithm">Gift wrapping algorithm</a>.
