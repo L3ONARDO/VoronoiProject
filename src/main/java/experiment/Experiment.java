@@ -17,10 +17,12 @@ import strategy.playertwo.ColinearNonUniformResponseStrategy;
 import strategy.playertwo.ColinearUniformResponseStrategy;
 import strategy.playertwo.GridLikeResponseStrategy;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Experiment {
+    float scale = 10000f;
 
     public void perform(int testId, StrategyPair strategyPair, float xmin, float xmax, float ymin, float ymax, double[] pop, NumberOfPlayerTwoPoints numberOfPlayerTwoPoints, String playerOneStrategyName, String playerTwoStrategyName, boolean outputPoints) {
         VoronoiDiagramAnalyzer analyzer = new VoronoiDiagramAnalyzer();
@@ -30,6 +32,7 @@ public class Experiment {
             for (double n : ptp) {
                 n = Math.min(m - 1, n);
                 Set<Point> input = strategyPair.apply((int) m, (int) n, xmax, ymax);
+                input = scaleInput(input);
                 if (outputPoints) {
                     for (Point p : input) {
                         System.out.println(p.getX() + "," + p.getY());
@@ -47,16 +50,23 @@ public class Experiment {
         }
     }
 
+    private Set<Point> scaleInput(Set<Point> input) {
+        Set<Point> result = new HashSet<>();
+        for (Point p : input) {
+            result.add(new Point(p.getOwner(), scale * p.getX(), scale * p.getY()));
+        }
+        return result;
+    }
+
     private List<Polygon> computeVoronoi(Set<Point> input, int xmin, int xmax, int ymin, int ymax) {
         PowerDiagram diagram = new PowerDiagram();
 
         OpenList sites = new OpenList();
-
         PolygonSimple rootPolygon = new PolygonSimple();
-        rootPolygon.add(xmin, ymin);
-        rootPolygon.add(xmax, ymin);
-        rootPolygon.add(xmax, ymax);
-        rootPolygon.add(xmin, ymax);
+        rootPolygon.add(scale * xmin, scale * ymin);
+        rootPolygon.add(scale * xmax, scale * ymin);
+        rootPolygon.add(scale * xmax, scale * ymax);
+        rootPolygon.add(scale * xmin, scale * ymax);
 
         for (Point point : input) {
             Site site = new Site(point.getX(), point.getY());
@@ -70,6 +80,6 @@ public class Experiment {
 
         diagram.computeDiagram();
 
-        return diagram.getPolygons();
+        return diagram.getPolygons(1f / scale);
     }
 }

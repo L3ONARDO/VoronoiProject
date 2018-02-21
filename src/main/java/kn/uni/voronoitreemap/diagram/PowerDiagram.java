@@ -32,6 +32,7 @@ import kn.uni.voronoitreemap.j2d.PolygonSimple;
 import kn.uni.voronoitreemap.j2d.Site;
 import model.Point;
 import model.Polygon;
+import util.MathUtils;
 
 
 /**
@@ -42,6 +43,7 @@ import model.Polygon;
  * 
  */
 public class PowerDiagram {
+	private final MathUtils mathUtils = new MathUtils();
 
 	public static Random rand = new Random(99);
 	public static final int halfLineScalingFactor = 10000;
@@ -408,28 +410,19 @@ public class PowerDiagram {
 		}
 	}
 
-	public List<Polygon> getPolygons() {
+	public List<Polygon> getPolygons(float scale) {
 		List<Polygon> result = new ArrayList<>();
-		int l = 0;
-		int j = 0;
 		for (Site site : sites) {
-			System.out.println("Site: " + l);
 			Polygon polygon = new Polygon();
 			polygon.setOwner(site.getOwner());
 			PolygonSimple simplePolygon = site.getPolygon();
-			if (simplePolygon == null) {
-				System.out.println();
-			}
 			if (simplePolygon != null) {
-				System.out.println("Non-null simplePolygon: " + j);
 				for (int i = 0; i < simplePolygon.length; i++) {
-					Point point = new Point(true, (float) simplePolygon.getXPoints()[i], (float) simplePolygon.getYPoints()[i]);
+					Point point = new Point(true, scale * (float) simplePolygon.getXPoints()[i], scale * (float) simplePolygon.getYPoints()[i]);
 					if (!polygon.deepContainsPoint(point)) polygon.addPoint(point);
 				}
 				result.add(polygon);
-				j++;
 			}
-			l++;
 		}
 		return result;
 	}
