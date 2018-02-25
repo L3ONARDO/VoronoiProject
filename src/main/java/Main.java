@@ -37,22 +37,22 @@ public class Main {
 //        experiment.perform(2, colinearUniformVsBenchmarking, xmin, xmax, ymin, ymax, pop,
 //                new NumberOfPlayerTwoPointsColinear(), "colinearUniform",
 //                "benchmarking", false);
-        // This one does not seem to work.
+////         This one does not seem to work.
 //        experiment.perform(3, colinearUniformVsResponse, xmin, xmax, ymin, ymax, pop,
 //                new NumberOfPlayerTwoPointsColinear(), "colinearUniform",
 //                "colinearUniformResponse", false);
         double[] pop2 = {4, 36, 256, 1024};
 //        experiment.perform(4, gridLikeUniformVsBenchmarking, xmin, xmax, ymin, ymax, pop2,
 //                new NumberOfPlayerTwoPointsColinear(), "gridLikeUniform",
-//                "benchmarking", false);
-        experiment.perform(5, gridLikeUniformVsResponse, xmin, xmax, ymin, ymax, pop2,
-                new NumberOfPlayerTwoPointsColinear(), "gridLikeUniform",
-                "gridLikeUniformResponse", false);
+//                "benchmarking", true);
+//        experiment.perform(5, gridLikeUniformVsResponse, xmin, xmax, ymin, ymax, pop2,
+//                new NumberOfPlayerTwoPointsColinear(), "gridLikeUniform",
+//                "gridLikeUniformResponse", true);
 //        experiment.perform(6, gridLikeImprovedVsBenchmarking, xmin, xmax, ymin, ymax, pop2,
 //                new NumberOfPlayerTwoPointsColinear(), "gridLikeImproved",
-//                "benchmarking", false);
-//        experiment.perform(7, gridLikeImprovedVsResponse, xmin, xmax, ymin, ymax, pop2,
-//                new NumberOfPlayerTwoPointsColinear(), "gridLikeImrpoved",
-//                "gridLikeImprovedResponse", false);
+//                "benchmarking", true);
+        experiment.perform(7, gridLikeImprovedVsResponse, xmin, xmax, ymin, ymax, pop2,
+                new NumberOfPlayerTwoPointsColinear(), "gridLikeImrpoved",
+                "gridLikeImprovedResponse", true);
     }
 }

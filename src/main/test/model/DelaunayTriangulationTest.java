@@ -90,6 +90,23 @@ public class DelaunayTriangulationTest {
         }
     }
 
+    @Test
+    public void randomTest() {
+        float scale = 500f;
+        Random random = new Random();
+        Set<Point> input = new HashSet<>();
+        for (int i = 0; i < 10; i++) {
+            float x = random.nextFloat();
+            float y = random.nextFloat();
+            Point point = new Point(true, x, y);
+            input.add(point);
+        }
+        List<Triangle> triangulation = instance.calculate(input);
+        for (Triangle t : triangulation) {
+            System.out.print("[" + scale * t.getP1().getX() + ", " + scale * t.getP1().getY() + ", " + scale * t.getP2().getX() + ", " + scale * t.getP2().getY() + ", " + + scale * t.getP3().getX() + ", " + scale * t.getP3().getY() + "], ");
+        }
+    }
+
     private Set<Point> buildInput(Point... points) {
         Set<Point> result = new HashSet<>();
         for (Point p : points) {

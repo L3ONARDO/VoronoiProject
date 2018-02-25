@@ -23,6 +23,7 @@ import java.util.Set;
 
 public class Experiment {
     float scale = 10000f;
+    float visScale = 500f;
 
     public void perform(int testId, StrategyPair strategyPair, float xmin, float xmax, float ymin, float ymax, double[] pop, NumberOfPlayerTwoPoints numberOfPlayerTwoPoints, String playerOneStrategyName, String playerTwoStrategyName, boolean outputPoints) {
         VoronoiDiagramAnalyzer analyzer = new VoronoiDiagramAnalyzer();
@@ -33,19 +34,53 @@ public class Experiment {
                 n = Math.min(m - 1, n);
                 Set<Point> input = strategyPair.apply((int) m, (int) n, xmax, ymax);
                 input = scaleInput(input);
-                if (outputPoints) {
-                    for (Point p : input) {
-                        System.out.println(p.getX() + "," + p.getY());
-                    }
-                    System.out.println("\n\n");
-                }
                 List<Polygon> result = computeVoronoi(input, (int) xmin, (int) xmax, (int) ymin, (int) ymax);
+                if (outputPoints) {
+                    String owners = "";
+                    String points = "";
+                    for (Point point : input) {
+                        String owner = "True, ";
+                        if (!point.getOwner()) owner = "False, ";
+                        owners = owners.concat(owner);
+                        points = points.concat(String.valueOf(visScale * point.getX() / scale));
+                        points = points.concat(", ");
+                        points = points.concat(String.valueOf(visScale * point.getY() / scale));
+                        points = points.concat(", ");
+                    }
+                    owners = owners.substring(0, owners.length() - 2);
+                    points = points.substring(0, points.length() - 2);
+                    System.out.println("pointsOwners = [" + owners + "]");
+                    System.out.println("points = [" + points + "]");
+                    owners = "";
+                    String allPoints = "";
+                    for (Polygon polygon : result) {
+                        String owner = "True, ";
+                        if (!polygon.getOwner()) owner = "False, ";
+                        owners = owners.concat(owner);
+                        points = "";
+                        for (Point point : polygon.getPoints()) {
+                            points = points.concat(String.valueOf(visScale * point.getX()));
+                            points = points.concat(", ");
+                            points = points.concat(String.valueOf(visScale * point.getY()));
+                            points = points.concat(", ");
+                        }
+                        points = points.substring(0, points.length() - 2);
+                        allPoints = allPoints.concat("[");
+                        allPoints = allPoints.concat(points);
+                        allPoints = allPoints.concat("]");
+                        allPoints = allPoints.concat(", ");
+                    }
+                    owners = owners.substring(0, owners.length() - 2);
+                    allPoints = allPoints.substring(0, allPoints.length() - 2);
+                    System.out.println("owners = [" + owners + "]");
+                    System.out.println("input = [" + allPoints + "]");
+                }
                 float[] stats = analyzer.analyze(result, xmin, xmax, ymin, ymax);
                 int winner = 0;
                 if (stats[0] < stats[1]) winner = 1;
                 if (stats[0] == stats[1]) winner = 2;
                 String[] winnerStrings = {"player1", "player2", "tie"};
-                System.out.println(testId + "," + m + "," + n + "," + stats[0] + "," + stats[1] + "," + playerOneStrategyName + "," + playerTwoStrategyName + "," + winnerStrings[winner]);
+                System.out.println("#" + testId + "," + m + "," + n + "," + stats[0] + "," + stats[1] + "," + playerOneStrategyName + "," + playerTwoStrategyName + "," + winnerStrings[winner]);
             }
         }
     }
